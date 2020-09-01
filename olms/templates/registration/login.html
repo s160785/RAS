@@ -1,0 +1,21 @@
+{% extends 'base.html' %} {% load bootstrap4 %} {% block content %}
+<header
+  style="
+    text-align: center;
+    padding-top: 50px;
+    font-family: globs;
+    padding-bottom: 100px;
+  "
+>
+  <h1>Online Leave Management System</h1>
+</header>
+<div class="box" style="background-color: honeydew">
+  <form method="post">
+    {% csrf_token %} {% bootstrap_form form %}
+    <button type="submit" class="btn btn-primary" align="center">Login</button>
+  </form>
+</div>
+<div align="center" style="padding: 20px">
+  Register <a href="/register">here</a>
+</div>
+{% endblock content %}

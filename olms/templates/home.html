@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<style>
+.center {
+  margin: auto;
+  width: 60%;
+  border: 3px solid;
+  padding: 10px;
+  margin-top:50px;
+  padding:20px;
+  height: 70%;
+  background-color:honeydew;
+}
+a span {display: none; position: absolute; color: #fff; background: #000; padding: 10px;}
+a {position: relative;}
+a:hover span {display: flex; flex-direction: row; z-index: 10;}
+</style>
+<header style='text-align:center;padding-top:50px;font-family:globs'><h1>Online Leave Management System<span style='float:right;padding:10px;font-size: 20px;'>{{id}} <a href="/logout"><Button class="btn btn-danger">logout</Button></a></span></h1></header>
+<span style='float:right;padding-right:20px'><a href='/newleave'><Button class='btn btn-success'>+ New Leave</Button></a></span>
+<h2 align='center'>Your leaves</h2>
+<div class='center' >
+<div style='border-bottom:1px solid gray'><span style='padding-left:10px'>Reason</span><span style='float:right;padding-right:20px'>status</span></div>
+{% for l in leaves %}<a href='#'>{{forloop.counter}}.{{l.reason}}<span>{{l.description}}</span></a><span style='float:right;'>{{l.status}}</span><a style='color:red;float:right;padding-right:10px' href={% url 'delete' l.pk %}>delete</a></p>{% endfor %}
+</div>
+
+{% endblock content %}
