@@ -133,3 +133,8 @@ AUTH_PROFILE_MODULE = "olms.UserProfile"
 BOOTSTRAP4 = {
     'include_jquery': True,
 }
+
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'olms/media')

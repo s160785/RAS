@@ -10,7 +10,7 @@
 {%block content%}
 <header style='text-align:center;padding-top:50px;font-family:globs'><h1>Online Leave Management System</h1></header>
 <div class='box' style="background-color:honeydew;">
-<form action='newleave' method='post'>
+<form action='newleave' method='post' enctype="multipart/form-data">
 {{form.media}}
 {% csrf_token %}
 {% bootstrap_form form %} 

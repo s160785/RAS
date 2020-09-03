@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<style>
+    .center {
+      margin: auto;
+      width: 60%;
+      border: 3px solid;
+      padding: 10px;
+      margin-top:50px;
+      padding:20px;
+      height: 600px;
+      background-color:honeydew;
+      overflow: auto;
+    }
+a span {display: none; position: absolute; color: #fff; background: #000; padding: 10px;}
+a {position: relative;}
+a:hover span {display: flex; flex-direction: row; z-index: 10;}
+</style>
+<header style='text-align:center;padding-top:50px;font-family:globs'><h1>Online Leave Management System<span style='float:right;padding:10px;font-size: 20px;'>{{username}}(admin)<a href="/logout"><Button class="btn btn-danger">logout</Button></a></span></h1></header>
+    <div class='center' >
+        <div style='border-bottom:1px solid gray'><span style='padding-left:10px'>Reason</span><span style='float:right;padding-right:20px'><span style="padding-right:120px;">Proof</span>Status</span></div>
+        {% for l in leaves %}{{forloop.counter}}.<a href='#'>{{l.reason}}<span>{{l.description}}</span></a><span style='float:right;'></a>{% if l.proof%}<a href="{{ l.proof.url}}" download style="padding: 20px;">Download</a> {% endif %}<a style='color:red;padding-right:10px' href={% url 'approve' l.pk %}>approve</a><a style='color:red;padding-right:10px' href={% url 'reject' l.pk %}>reject</a></span><br>{% endfor %}
+        </div>
+{%endblock%}
