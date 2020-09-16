@@ -1,28 +1,90 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block content %}
-<style>
-.center {
-  margin: auto;
-  width: 60%;
-  border: 3px solid;
-  padding: 10px;
-  margin-top:50px;
-  padding:20px;
-  height: 600px;
-  background-color:honeydew;
-  overflow: auto;
-}
-a span {display: none; position: absolute; color: #fff; background: #000; padding: 10px;}
-a {position: relative;}
-a:hover span {display: flex; flex-direction: row; z-index: 10;}
-</style>
+{% comment  %}
 <header style='text-align:center;padding-top:50px;font-family:globs'><h1>Online Leave Management System<span style='float:right;padding:10px;font-size: 20px;'>{{id}} <a href="/logout"><Button class="btn btn-danger">logout</Button></a></span></h1></header>
 <span style='float:right;padding-right:20px'><a href='/newleave'><Button class='btn btn-success'>+ New Leave</Button></a></span>
 <h2 align='center'>Your leaves</h2>
-<div class='center' >
+
 <div style='border-bottom:1px solid gray'><span style='padding-left:10px'>Reason</span><span style='float:right;padding-right:20px'><span style="padding-right:120px;">Proof</span>Status</span></div>
-{% for l in leaves %}{{forloop.counter}}.<a href='#'>{{l.reason}}<span>{{l.description}}</span></a><span style='float:right;'></a>{% if l.proof%}<a href="{{ l.proof.url}}" download style="padding: 20px;">Download</a> {% endif %}<a style='color:red;padding-right:10px' href={% url 'delete' l.pk %}>delete</a> {{l.status}}</span><br>{% endfor %}
+{% for l in leaves %}{{forloop.counter}}.<a href='#'>{{l.reason}}<span>{{l.description}}</span></a><span style='float:right;'></a>{% if l.proof%}<a href="{{ l.proof.url}}" download style="padding: 20px;">Download</a> {% endif %}<a style='color:red;padding-right:10px' href={% url 'delete' l.pk %}>delete</a> {{l.status}}</span><br>{% endfor %} {% endcomment %}
+
+	<div class="title" style="padding-bottom: 10px;font-family: 'Lobster Two', cursive;">
+		<h1 style="font-family: 'Lobster Two', cursive;">Student Leave Management System</h1>
+	</div>
+
+	<nav class="navbar navbar-dark bg-dark">
+  		<div class="container-fluid" >
+    		<div class="navbar-header">
+      			<a class="navbar-brand" style='font-family:"Lucida Console", Courier, monospace;'>SLMS</a>
+    		</div>
+    			<ul class="nav navbar-nav">
+      				<a href="/newleave" class="btn btn-info btn-mg">
+          <span>+</span> New leave
+        </a>
+    			</ul>
+          {% comment %} <ul>
+      				<span style='font-family:sans-serif;color:orange;font-size:20px'>
+          {{user}}</span>&nbsp {% endcomment %}
+      			<a class="navbar-brand">{{id}}</a>
+    				<a href="/logout" class="btn btn-info btn-mg" style="position:relative;margin-left:20px">
+          <span class="glyphicon glyphicon-log-out"></span> Log out</a>
+        {% comment %} </a></ul> {% endcomment %}
+      </p> 
+  			</div>
+	</nav>
+<p style='font-size:20px;padding-left:10%'><b>Leaves:</b></p>
+<div class='center' >
+<table class="table table-striped">
+  			<thead>
+      			<tr>
+              <th>S.no</th>
+        			<th>Reason</th>
+              <th>Description</th>
+              <th>Out date </th>
+              <th>In date</th>
+        			<th>Proof</th>
+        			<th>Status</th>
+              <th>Remark</th>
+      			</tr>
+    		</thead>
+    		<tbody class="actions">
+        {% for l in leaves %}
+      			<tr>
+              <td style='width:10px'>{{forloop.counter}}</td>
+        			<td><b>{{l.reason}}</b></td>
+              <td id='reason'><a href='#'>{{l.description|truncatechars:70}}<span>{{l.description}}</span></a></td>
+              <td>{{l.out_date|date:'M d,Y'}}</td>
+              <td>{{l.in_date|date:'M d,Y'}}</td>
+        			<td>{% if l.proof %}<a href="{{ l.proof.url}}" target='_blank'>View</a>{% endif %}</td>
+              <td>{{l.status}}</td>
+              <td>{{l.remark}}</td>
+      			</tr>
+      		
+      {% endfor %}
+		</table>
+</div>
+<p style='font-size:20px;padding :1% 0% 0.5% 10%;'><b>Outings:</b></p>
+<div class='center' >
+<table class="table table-striped">
+  			<thead>
+      			<tr>
+              <th>S.no</th>
+			  <th>Id no.</th>
+        	  <th>Reason</th>
+        		<th>Date</th>
+              <th>Out time</th>
+              <th>In time</th>
+        		<th>Action</th>
+        		<th>Action</th>
+				<th>Remark</th>
+      			</tr>
+    		</thead>
+    		<tbody class="actions">
+			
+			</tbody>
+      		
+		</table>
 </div>
 
 {% endblock content %}

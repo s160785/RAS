@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from . import forms
 from .models import UserProfile, Leaves
+from datetime import datetime
 
 # Create your views here.
 
@@ -14,12 +15,13 @@ def main(response):
 
 def register(response):
     if response.method == 'GET':
-        return render(response, 'register.html', {'form': forms.student()})
+        return render(response, 'register.html', {'form': forms.student(), 'pform': forms.pform()})
 
     if response.method == 'POST':
         form = forms.student(response.POST)
+        pform = forms.pform(response.POST)
 
-        if form.is_valid():
+        if pform.is_valid():
             cd = form.cleaned_data
             email = f'{cd["id"]}@rguktsklm.ac.in'
             user = User.objects.get_or_create(
@@ -27,14 +29,16 @@ def register(response):
             user.set_password(cd["password1"])
             user.save()
             up = UserProfile(user=user)
-            up.id = cd['id'].capitalize()
+            up.uid = cd['id'].capitalize()
             up.branch = cd['branch']
             up.year = cd['year']
             up.save()
+            pform = pform.save(commit=False)
+            pform.userprofile = up
+            pform.save()
 
             return redirect('/')
-
-        return render(response, 'register.html', {'form': form})
+        return render(response, 'register.html', {'form': form, 'pform': pform})
 
 
 def userhome(response):
@@ -56,6 +60,8 @@ def usertype(response):
 def newLeave(response):
     if not isinstance(response.user, User):
         return redirect('login')
+    if not usertype(response) == 'student':
+        return redirect('home')
     if response.method == 'GET':
         form = forms.newLeave()
         if not response.user.profile.in_campus:
@@ -69,7 +75,7 @@ def newLeave(response):
             form.status = 'pending'
             form.save()
         else:
-            print('not valid')
+            return render(response, 'newLeave.html', {'form': form})
         return redirect('home')
 
 
@@ -78,8 +84,10 @@ def home(response):
         return redirect('logout')
     if userhome(response):
         return redirect(userhome(response).url)
+    if not response.user.profile.in_campus:
+        return redirect('nic')
     leaves = Leaves.objects.filter(user=response.user.profile).order_by('-id')
-    return render(response, 'home.html', {'leaves': leaves, 'id': response.user.profile.id})
+    return render(response, 'home.html', {'leaves': leaves, 'id': response.user.profile.uid})
 
 
 def delete(response, lid):
@@ -143,8 +151,9 @@ def out(response, lid):
         return redirect('home')
     leave = Leaves.objects.get(pk=lid)
     leave.status = 'on_leave'
+    leave.actual_out_date = datetime.now()
     leave.save()
-    user = UserProfile.objects.get(id=leave.user.id)
+    user = UserProfile.objects.get(uid=leave.user.uid)
     user.in_campus = False
     user.save()
     print(user)
@@ -158,8 +167,22 @@ def inn(response, lid):
         return redirect('home')
     leave = Leaves.objects.get(pk=lid)
     leave.status = 'completed'
+    leave.actual_in_date = datetime.now()
     leave.save()
-    user = UserProfile.objects.get(id=leave.user.id)
+    user = UserProfile.objects.get(uid=leave.user.uid)
     user.in_campus = True
     user.save()
     return redirect('sec_home')
+
+
+def leave_view(response, lid):
+    if response.user.is_superuser or not isinstance(response.user, User):
+        return redirect('logout')
+    if usertype(response) != 'admin':
+        return redirect('home')
+    leave = Leaves.objects.get(pk=lid)
+    return render(response, 'leave_view.html', {'leave': leave})
+
+
+def nic(response):
+    return render(response, 'nic.html', {})

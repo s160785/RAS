@@ -8,8 +8,31 @@
 {{ form.media }}
 {% endblock %}
 {%block content%}
-<header style='text-align:center;padding-top:50px;font-family:globs'><h1>Online Leave Management System</h1></header>
-<div class='box' style="background-color:honeydew;">
+
+	<div class="title" style="padding-bottom: 10px;font-family: 'Lobster Two', cursive;">
+		<h1 style="font-family: 'Lobster Two', cursive;">Student Leave Management System</h1>
+	</div>
+	<nav class="navbar navbar-dark bg-dark">
+  		<div class="container-fluid" >
+    		<div class="navbar-header">
+      			<a class="navbar-brand" style='font-family:"Lucida Console", Courier, monospace;'>SLMS</a>
+    		</div>
+    			<ul class="nav navbar-nav">
+      				<a href="/" class="btn btn-info btn-mg">
+          <span class="glyphicon glyphicon-home"></span> Home
+        </a>
+        </ul>
+          {% comment %} <ul>
+      				<span style='font-family:sans-serif;color:orange;font-size:20px'>
+          {{user}}</span>&nbsp {% endcomment %}
+      			<a class="navbar-brand">{{user}}</a>
+    				<a href="/logout" class="btn btn-info btn-mg" style="position:relative;margin-left:20px">
+          <span class="glyphicon glyphicon-log-out"></span> Log out</a>
+        {% comment %} </a></ul> {% endcomment %}
+      </p> 
+  			</div>
+	</nav>
+<div class='box'>
 <form action='newleave' method='post' enctype="multipart/form-data">
 {{form.media}}
 {% csrf_token %}

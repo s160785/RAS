@@ -1,24 +1,13 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block content %}
-<style>
-    .center {
-      margin: auto;
-      width: 60%;
-      border: 3px solid;
-      padding: 10px;
-      margin-top:50px;
-      padding:20px;
-      height: 600px;
-      background-color:honeydew;
-      overflow: auto;
-    }
-a span {display: none; position: absolute; color: #fff; background: #000; padding: 10px;}
+{% comment %} a span {display: none; position: absolute; color: #fff; background: #000; padding: 10px;}
 a {position: relative;}
-a:hover span {display: flex; flex-direction: row; z-index: 10;}
+a:hover span {display: flex; flex-direction: row; z-index: 10;} {% endcomment %}
 </style>
-<header style='text-align:center;padding-top:50px;font-family:globs'><h1>Online Leave Management System<span style='float:right;padding:10px;font-size: 20px;'>security <a href="/logout"><Button class="btn btn-danger">logout</Button></a></span></h1></header>
+{% comment %} <header style='text-align:center;padding-top:50px;font-family:globs'><h1>Online Leave Management System<span style='float:right;padding:10px;font-size: 20px;'>security <a href="/logout"><Button class="btn btn-danger">logout</Button></a></span></h1></header>
     <div class='center' >
+        <form align='right' action="{% url 'sec_search' %}"><input type='text' name='search_query'/><Button type='submit' style='background-color:lightgreen'>Search</Button></form>
         <div style='border-bottom:1px solid gray'><span style='padding-left:10px'>Reason</span><span style='float:right;padding-right:20px'><span style="padding-right:120px;">Proof</span>Status</span></div>
         {% for l in leaves %}
             {{forloop.counter}}.{{l.user.id}}
@@ -31,5 +20,53 @@ a:hover span {display: flex; flex-direction: row; z-index: 10;}
             </span><br>
         {% endfor %}
         </div>
-    </div>
+    </div> {% endcomment %}
+    <div class="title" style="padding-bottom: 10px;font-family: 'Lobster Two', cursive;">
+		<h1 style="font-family: 'Lobster Two', cursive;">Student Leave Management System</h1>
+	</div>
+
+	<nav class="navbar navbar-dark bg-dark">
+  		<div class="container-fluid" >
+    		<div class="navbar-header">
+      			<a class="navbar-brand" style='font-family:"Lucida Console", Courier, monospace;'>SLMS</a>
+    		</div>
+    			<ul class="nav navbar-nav">
+      				<a href="#" class="btn btn-info btn-mg">
+          <span class="glyphicon glyphicon-home"></span> Home
+        </a>
+    			</ul>
+          {% comment %} <ul>
+      				<span style='font-family:sans-serif;color:orange;font-size:20px'>
+          {{user}}</span>&nbsp {% endcomment %}
+      			<a class="navbar-brand">{{user}}</a>
+    				<a href="/logout" class="btn btn-info btn-mg" style="position:relative;margin-left:20px">
+          <span class="glyphicon glyphicon-log-out"></span> Log out</a>
+        {% comment %} </a></ul> {% endcomment %}
+      </p> 
+  			</div>
+	</nav>
+<p style='font-size:20px;padding-left:10%'><b>Leaves:</b></p>
+	<div class="center" style="padding-top: 20px;">
+  		<table class="table table-striped">
+  			<thead>
+      			<tr>
+              <th>S.no</th>
+        			<th>ID No.</th>
+        			<th>Action</th>
+      			</tr>
+    		</thead>
+    		<tbody class="actions">
+        {% for l in leaves %}
+      			<tr>
+              <td style='width:10px'>{{forloop.counter}}</td>
+        			<td><b>{{l.user.uid}}</b></td>
+                {% if l.user.in_campus is True %}
+        			<td id="Accept"><a href="{% url 'out' l.pk %}">Out</td>
+                {% else %}
+        			<td id="Reject"><a href="{% url 'in' l.pk %}">In</td>
+                {%endif%}
+      			</tr>
+      		
+      {% endfor %}
+		</table>
 {%endblock%}

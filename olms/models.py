@@ -2,12 +2,13 @@ import datetime
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+from django.core.validators import FileExtensionValidator
 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(
         User, unique=True, related_name='profile', on_delete=models.CASCADE)
-    id = models.CharField(max_length=7, primary_key=True)
+    uid = models.CharField(max_length=7, primary_key=True)
     usertypes = [('student', 'Student'), ('admin', 'Admin'),
                  ('security', 'Security')]
     usertype = models.CharField(
@@ -33,10 +34,25 @@ class Leaves(models.Model):
     reason = models.CharField(max_length=50, default=None)
     description = models.CharField(max_length=999, default=None)
     proof = models.FileField(default=None, blank=True,
-                             null=True, upload_to='proofs/')
+                             null=True, upload_to='proofs/', validators=[FileExtensionValidator(allowed_extensions=['pdf', 'doc', 'docx', 'jpg', 'png', 'xlsx', 'xls'])])
     out_date = models.DateTimeField(default=None, blank=True, null=True)
     in_date = models.DateTimeField(default=None,  blank=True, null=True)
+    actual_out_date = models.DateTimeField(default=None, blank=True, null=True)
+    actual_in_date = models.DateTimeField(default=None, blank=True, null=True)
     statuses = [('pending', 'pending'), ('granted',
                                          'granted'), ('rejected', 'rejected'), ('on_leave', 'On Leave'), ('completed', 'Completed')]
     status = models.CharField(
         max_length=9, choices=statuses, default='pending')
+    remark = models.CharField(max_length=100, default='No remark')
+
+
+class Personal_info(models.Model):
+    aadhar_no = models.IntegerField(primary_key=True)
+    userprofile = models.OneToOneField(
+        UserProfile, on_delete=models.CASCADE, related_name='personal_info')
+    phone_no = models.IntegerField()
+    Parent_name = models.CharField(max_length=50)
+    Parent_phn_no = models.IntegerField()
+    address = models.CharField(max_length=300)
+    city = models.CharField(max_length=20)
+    district = models.CharField(max_length=30)

@@ -21,6 +21,7 @@ urlpatterns = [
     path('out/<int:lid>', views.out, name='out'),
     path('in/<int:lid>', views.inn, name='in'),
     path('sec_home', views.sec_home, name='sec_home'),
+    path('nic', views.nic, name='nic'),  # not in campus site url
 
 ] + static(settings.STATIC_URL, doucument_root=settings.STATIC_ROOT)
 

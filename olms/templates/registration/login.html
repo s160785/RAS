@@ -3,13 +3,13 @@
   style="
     text-align: center;
     padding-top: 50px;
-    font-family: globs;
+    font-family: 'Lobster Two', cursive;
     padding-bottom: 100px;
   "
 >
   <h1>Online Leave Management System</h1>
 </header>
-<div class="box" style="background-color: honeydew">
+<div class="box">
   <form method="post">
     {% csrf_token %} {% bootstrap_form form %}
     <button type="submit" class="btn btn-primary" align="center">Login</button>

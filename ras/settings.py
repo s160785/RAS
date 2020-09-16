@@ -138,3 +138,6 @@ BOOTSTRAP4 = {
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'olms/media')
+
+
+MAX_UPLOAD_SIZE = 10485760
